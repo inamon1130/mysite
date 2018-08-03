@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 
 from .models import Choice, Question
-
+from django.db.models import F
 
 def index(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
@@ -35,7 +35,8 @@ def vote(request, question_id):
             'error_message': "you didn't select a choice.",
         })
     else:
-        selected_choice.votes += 1
+        print("selected_choice.votes = F('votes') + 1")
+        selected_choice.votes = F('votes') + 1
         selected_choice.save()
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
